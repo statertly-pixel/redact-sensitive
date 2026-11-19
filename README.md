@@ -64,6 +64,16 @@ Recursively redacts strings inside objects and arrays. Useful for sanitising a w
 redactObject({ user: { email: 'ana@example.com' }, tags: ['x@y.com'] });
 // { user: { email: '[EMAIL]' }, tags: ['[EMAIL]'] }
 
+// Arrays of log records are walked too, including nested arrays:
+redactObject({ records: [
+  { email: 'ana@example.com', token: '<token-1>' },
+  { email: 'bob@example.com', token: '<token-2>' },
+] });
+// { records: [
+//   { email: '[EMAIL]', token: '[TOKEN]' },
+//   { email: '[EMAIL]', token: '[TOKEN]' },
+// ] }
+
 // Values stored under a sensitive key name are replaced outright,
 // whatever their type — even when they look like plain text:
 redactObject({ password: 'hunter2', apiKey: 'abc123secret', user: 'ana' });
